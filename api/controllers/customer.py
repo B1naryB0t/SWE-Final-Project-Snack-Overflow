@@ -1,5 +1,6 @@
-from sqlalchemy.orm import Session
 from fastapi import status, Response
+from sqlalchemy.orm import Session
+
 from ..models import customer as model
 
 
