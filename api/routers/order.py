@@ -1,0 +1,36 @@
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from ..controllers import order as controller
+from ..dependencies.database import get_db
+from ..schemas import order as schema
+
+router = APIRouter(
+    tags=['Orders'],
+    prefix="/order"
+)
+
+
+@router.post("/", response_model=schema.OrderBase)
+def create(request: schema.OrderCreate, db: Session = Depends(get_db)):
+    return controller.create(db=db, order=request)
+
+
+@router.get("/", response_model=list[schema.OrderBase])
+def read_all(db: Session = Depends(get_db)):
+    return controller.read_all(db)
+
+
+@router.get("/{order_id}", response_model=schema.OrderBase)
+def read_one(order_id: int, db: Session = Depends(get_db)):
+    return controller.read_one(db, order_id=order_id)
+
+
+@router.put("/{order_id}", response_model=schema.OrderBase)
+def update(order_id: int, request: schema.OrderUpdate, db: Session = Depends(get_db)):
+    return controller.update(db=db, order=request, order_id=order_id)
+
+
+@router.delete("/{order_id}")
+def delete(order_id: int, db: Session = Depends(get_db)):
+    return controller.delete(db=db, order_id=order_id)
