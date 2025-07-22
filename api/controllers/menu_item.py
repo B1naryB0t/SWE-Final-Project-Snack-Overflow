@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import menu_item as model
 
+
 def create(db: Session, menu_item):
     db_menu_item = model.MenuItem(
         name=menu_item.name,

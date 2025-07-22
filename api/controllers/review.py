@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import review as model
 
+
 def create(db: Session, review):
     db_review = model.Review(
         rating=review.rating,

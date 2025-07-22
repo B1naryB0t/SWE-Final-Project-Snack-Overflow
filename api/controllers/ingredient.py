@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import ingredient as model
 
+
 def create(db: Session, ingredient):
     db_ingredient = model.Ingredient(
         name=ingredient.name,

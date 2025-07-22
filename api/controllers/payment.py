@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import payment as model
 
+
 def create(db: Session, payment):
     db_payment = model.Payment(
         status=payment.status,

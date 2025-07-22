@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import promotion as model
 
+
 def create(db: Session, promotion):
     db_promotion = model.Promotion(
         code=promotion.code,

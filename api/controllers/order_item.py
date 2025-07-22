@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import order_item as model
 
+
 def create(db: Session, order_item):
     db_order_item = model.OrderItem(
         quantity=order_item.quantity,

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from ..models import order as model
 
+
 def create(db: Session, order):
     db_order = model.Order(
         date=order.date,
