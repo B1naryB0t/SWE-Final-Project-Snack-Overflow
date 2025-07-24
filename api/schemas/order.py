@@ -33,6 +33,7 @@ class OrderUpdate(BaseModel):
 	class ConfigDict:
 		from_attributes = True
 
+
 class Order(OrderBase):
 	id: int
 

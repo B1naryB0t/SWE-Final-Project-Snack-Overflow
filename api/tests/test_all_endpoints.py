@@ -1,155 +1,167 @@
 import pytest
 from fastapi.testclient import TestClient
+
 from ..main import app
 
 client = TestClient(app)
 
+
 @pytest.fixture(scope="module")
 def test_data():
-    data = {}
+	data = {}
 
-    # Create Customer
-    customer = {
-        "name": "Alice",
-        "email": "alice@example.com",
-        "phone": "1234567890",
-    }
-    r = client.post("/customer/", json=customer)
-    assert r.status_code in (200, 201)
-    data["customer_id"] = r.json()["id"]
+	# Create Customer
+	customer = {
+		"name": "Alice",
+		"email": "alice@example.com",
+		"phone": "1234567890",
+	}
+	r = client.post("/customer/", json=customer)
+	assert r.status_code in (200, 201)
+	data["customer_id"] = r.json()["id"]
 
-    # Create Ingredient
-    ingredient = {
-        "name": "Lettuce",
-        "quantity": 50.0,
-        "unit": "grams"
-    }
-    r = client.post("/ingredient/", json=ingredient)
-    assert r.status_code in (200, 201)
-    data["ingredient_id"] = r.json()["id"]
+	# Create Ingredient
+	ingredient = {
+		"name": "Lettuce",
+		"quantity": 50.0,
+		"unit": "grams"
+	}
+	r = client.post("/ingredient/", json=ingredient)
+	assert r.status_code in (200, 201)
+	data["ingredient_id"] = r.json()["id"]
 
-    # Create Menu Item
-    menu_item = {
-        "name": "Caesar Salad",
-        "category": "Appetizer",
-        "price": 7.50,
-        "calories": 250
-    }
-    r = client.post("/menu_item/", json=menu_item)
-    assert r.status_code in (200, 201)
-    data["menu_item_id"] = r.json()["id"]
+	# Create Menu Item
+	menu_item = {
+		"name": "Caesar Salad",
+		"category": "Appetizer",
+		"price": 7.50,
+		"calories": 250
+	}
+	r = client.post("/menu_item/", json=menu_item)
+	assert r.status_code in (200, 201)
+	data["menu_item_id"] = r.json()["id"]
 
-    # Link Ingredient to Menu Item
-    mii = {
-        "menu_item_id": data["menu_item_id"],
-        "ingredient_id": data["ingredient_id"]
-    }
-    r = client.post("/menu_item_ingredient/", json=mii)
-    assert r.status_code in (200, 201)
-    data["mii_id"] = r.json()["id"]
+	# Link Ingredient to Menu Item
+	mii = {
+		"menu_item_id": data["menu_item_id"],
+		"ingredient_id": data["ingredient_id"]
+	}
+	r = client.post("/menu_item_ingredient/", json=mii)
+	assert r.status_code in (200, 201)
+	data["mii_id"] = r.json()["id"]
 
-    # Create Order
-    order = {
-        "date": "2025-07-24",
-        "status": "pending",
-        "total": 15.0,
-        "customer_id": data["customer_id"]
-    }
-    r = client.post("/order/", json=order)
-    assert r.status_code in (200, 201)
-    data["order_id"] = r.json()["id"]
+	# Create Order
+	order = {
+		"date": "2025-07-24",
+		"status": "pending",
+		"total": 15.0,
+		"customer_id": data["customer_id"]
+	}
+	r = client.post("/order/", json=order)
+	assert r.status_code in (200, 201)
+	data["order_id"] = r.json()["id"]
 
-    # Add Menu Item to Order
-    order_item = {
-        "order_id": data["order_id"],
-        "menu_item_id": data["menu_item_id"],
-        "quantity": 2
-    }
-    r = client.post("/order_item/", json=order_item)
-    assert r.status_code in (200, 201)
-    data["order_item_id"] = r.json()["id"]
+	# Add Menu Item to Order
+	order_item = {
+		"order_id": data["order_id"],
+		"menu_item_id": data["menu_item_id"],
+		"quantity": 2
+	}
+	r = client.post("/order_item/", json=order_item)
+	assert r.status_code in (200, 201)
+	data["order_item_id"] = r.json()["id"]
 
-    # Add Payment
-    payment = {
-        "order_id": data["order_id"],
-        "status": "paid",
-        "type": "credit_card",
-        "transaction_id": "txn_001"
-    }
-    r = client.post("/payment/", json=payment)
-    assert r.status_code in (200, 201)
-    data["payment_id"] = r.json()["id"]
+	# Add Payment
+	payment = {
+		"order_id": data["order_id"],
+		"status": "paid",
+		"type": "credit_card",
+		"transaction_id": "txn_001"
+	}
+	r = client.post("/payment/", json=payment)
+	assert r.status_code in (200, 201)
+	data["payment_id"] = r.json()["id"]
 
-    # Add Promotion
-    promo = {
-        "code": "SUMMER25",
-        "discount_amount": 25.0,
-        "expiration_date": "2025-12-31"
-    }
-    r = client.post("/promotion/", json=promo)
-    assert r.status_code in (200, 201)
-    data["promotion_id"] = r.json()["id"]
+	# Add Promotion
+	promo = {
+		"code": "SUMMER25",
+		"discount_amount": 25.0,
+		"expiration_date": "2025-12-31"
+	}
+	r = client.post("/promotion/", json=promo)
+	assert r.status_code in (200, 201)
+	data["promotion_id"] = r.json()["id"]
 
-    # Add Review
-    review = {
-        "customer_id": data["customer_id"],
-        "menu_item_id": data["menu_item_id"],
-        "rating": 4,
-        "comment": "Great!"
-    }
-    r = client.post("/review/", json=review)
-    assert r.status_code in (200, 201)
-    data["review_id"] = r.json()["id"]
+	# Add Review
+	review = {
+		"customer_id": data["customer_id"],
+		"menu_item_id": data["menu_item_id"],
+		"rating": 4,
+		"comment": "Great!"
+	}
+	r = client.post("/review/", json=review)
+	assert r.status_code in (200, 201)
+	data["review_id"] = r.json()["id"]
 
-    return data
+	return data
+
 
 def test_read_customer(test_data):
-    r = client.get(f"/customer/{test_data['customer_id']}")
-    assert r.status_code == 200
+	r = client.get(f"/customer/{test_data['customer_id']}")
+	assert r.status_code == 200
+
 
 def test_update_review(test_data):
-    payload = {
-        "customer_id": test_data["customer_id"],
-        "menu_item_id": test_data["menu_item_id"],
-        "rating": 5,
-        "comment": "Updated review!"
-    }
-    r = client.put(f"/review/{test_data['review_id']}", json=payload)
-    assert r.status_code == 200
+	payload = {
+		"customer_id": test_data["customer_id"],
+		"menu_item_id": test_data["menu_item_id"],
+		"rating": 5,
+		"comment": "Updated review!"
+	}
+	r = client.put(f"/review/{test_data['review_id']}", json=payload)
+	assert r.status_code == 200
+
 
 def test_delete_review(test_data):
-    r = client.delete(f"/review/{test_data['review_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/review/{test_data['review_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_payment(test_data):
-    r = client.delete(f"/payment/{test_data['payment_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/payment/{test_data['payment_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_order_item(test_data):
-    r = client.delete(f"/order_item/{test_data['order_item_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/order_item/{test_data['order_item_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_order(test_data):
-    r = client.delete(f"/order/{test_data['order_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/order/{test_data['order_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_menu_item_ingredient(test_data):
-    r = client.delete(f"/menu_item_ingredient/{test_data['mii_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/menu_item_ingredient/{test_data['mii_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_menu_item(test_data):
-    r = client.delete(f"/menu_item/{test_data['menu_item_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/menu_item/{test_data['menu_item_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_ingredient(test_data):
-    r = client.delete(f"/ingredient/{test_data['ingredient_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/ingredient/{test_data['ingredient_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_promotion(test_data):
-    r = client.delete(f"/promotion/{test_data['promotion_id']}")
-    assert r.status_code in (200, 204)
+	r = client.delete(f"/promotion/{test_data['promotion_id']}")
+	assert r.status_code in (200, 204)
+
 
 def test_delete_customer(test_data):
-    r = client.delete(f"/customer/{test_data['customer_id']}")
-    assert r.status_code in (200, 204)
-
+	r = client.delete(f"/customer/{test_data['customer_id']}")
+	assert r.status_code in (200, 204)

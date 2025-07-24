@@ -6,31 +6,31 @@ from ..dependencies.database import get_db
 from ..schemas import promotion as schema
 
 router = APIRouter(
-    tags=['Promotions'],
-    prefix="/promotion"
+	tags=['Promotions'],
+	prefix="/promotion"
 )
 
 
 @router.post("/", response_model=schema.Promotion)
 def create(request: schema.PromotionCreate, db: Session = Depends(get_db)):
-    return controller.create(db=db, promotion=request)
+	return controller.create(db=db, promotion=request)
 
 
 @router.get("/", response_model=list[schema.Promotion])
 def read_all(db: Session = Depends(get_db)):
-    return controller.read_all(db)
+	return controller.read_all(db)
 
 
 @router.get("/{promotion_id}", response_model=schema.Promotion)
 def read_one(promotion_id: int, db: Session = Depends(get_db)):
-    return controller.read_one(db, promotion_id=promotion_id)
+	return controller.read_one(db, promotion_id=promotion_id)
 
 
 @router.put("/{promotion_id}", response_model=schema.Promotion)
 def update(promotion_id: int, request: schema.PromotionUpdate, db: Session = Depends(get_db)):
-    return controller.update(db=db, promotion=request, promotion_id=promotion_id)
+	return controller.update(db=db, promotion=request, promotion_id=promotion_id)
 
 
 @router.delete("/{promotion_id}")
 def delete(promotion_id: int, db: Session = Depends(get_db)):
-    return controller.delete(db=db, promotion_id=promotion_id)
+	return controller.delete(db=db, promotion_id=promotion_id)

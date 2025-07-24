@@ -6,31 +6,31 @@ from ..dependencies.database import get_db
 from ..schemas import order as schema
 
 router = APIRouter(
-    tags=['Orders'],
-    prefix="/order"
+	tags=['Orders'],
+	prefix="/order"
 )
 
 
 @router.post("/", response_model=schema.Order)
 def create(request: schema.OrderCreate, db: Session = Depends(get_db)):
-    return controller.create(db=db, order=request)
+	return controller.create(db=db, order=request)
 
 
 @router.get("/", response_model=list[schema.Order])
 def read_all(db: Session = Depends(get_db)):
-    return controller.read_all(db)
+	return controller.read_all(db)
 
 
 @router.get("/{order_id}", response_model=schema.Order)
 def read_one(order_id: int, db: Session = Depends(get_db)):
-    return controller.read_one(db, order_id=order_id)
+	return controller.read_one(db, order_id=order_id)
 
 
 @router.put("/{order_id}", response_model=schema.Order)
 def update(order_id: int, request: schema.OrderUpdate, db: Session = Depends(get_db)):
-    return controller.update(db=db, order=request, order_id=order_id)
+	return controller.update(db=db, order=request, order_id=order_id)
 
 
 @router.delete("/{order_id}")
 def delete(order_id: int, db: Session = Depends(get_db)):
-    return controller.delete(db=db, order_id=order_id)
+	return controller.delete(db=db, order_id=order_id)
