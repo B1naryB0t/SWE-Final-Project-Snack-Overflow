@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class OrderItemBase(BaseModel):
-	id: int
 	quantity: int
 	order_id: int
 	menu_item_id: int
@@ -26,6 +25,13 @@ class OrderItemUpdate(BaseModel):
 	quantity: Optional[int] = None
 	order_id: Optional[int] = None
 	menu_item_id: Optional[int] = None
+
+	class ConfigDict:
+		from_attributes = True
+
+
+class OrderItem(OrderItemBase):
+	id: int
 
 	class ConfigDict:
 		from_attributes = True

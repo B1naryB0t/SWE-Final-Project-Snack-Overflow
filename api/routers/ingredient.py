@@ -11,22 +11,22 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=schema.IngredientBase)
+@router.post("/", response_model=schema.Ingredient)
 def create(request: schema.IngredientCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, ingredient=request)
 
 
-@router.get("/", response_model=list[schema.IngredientBase])
+@router.get("/", response_model=list[schema.Ingredient])
 def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
 
-@router.get("/{ingredient_id}", response_model=schema.IngredientBase)
+@router.get("/{ingredient_id}", response_model=schema.Ingredient)
 def read_one(ingredient_id: int, db: Session = Depends(get_db)):
     return controller.read_one(db, ingredient_id=ingredient_id)
 
 
-@router.put("/{ingredient_id}", response_model=schema.IngredientBase)
+@router.put("/{ingredient_id}", response_model=schema.Ingredient)
 def update(ingredient_id: int, request: schema.IngredientUpdate, db: Session = Depends(get_db)):
     return controller.update(db=db, ingredient=request, ingredient_id=ingredient_id)
 

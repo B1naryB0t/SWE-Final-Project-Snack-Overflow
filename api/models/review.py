@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, ForeignKey, Text
+from sqlalchemy.orm import relationship
 
 from ..dependencies.database import Base
 
@@ -11,3 +12,6 @@ class Review(Base):
 	comment = Column(Text, nullable=False)
 	customer_id = Column(Integer, ForeignKey("customer.id"))
 	menu_item_id = Column(Integer, ForeignKey("menu_item.id"))
+
+	customer = relationship("Customer", back_populates="reviews")
+	menu_item = relationship("MenuItem", back_populates="reviews")

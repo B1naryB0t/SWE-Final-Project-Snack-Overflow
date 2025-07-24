@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 
 class OrderBase(BaseModel):
-	id: int
 	date: datetime
 	status: str
 	total: float
@@ -30,6 +29,12 @@ class OrderUpdate(BaseModel):
 	status: Optional[str] = None
 	total: Optional[float] = None
 	customer_id: Optional[int] = None
+
+	class ConfigDict:
+		from_attributes = True
+
+class Order(OrderBase):
+	id: int
 
 	class ConfigDict:
 		from_attributes = True

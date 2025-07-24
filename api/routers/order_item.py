@@ -11,22 +11,22 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=schema.OrderItemBase)
+@router.post("/", response_model=schema.OrderItem)
 def create(request: schema.OrderItemCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, order_item=request)
 
 
-@router.get("/", response_model=list[schema.OrderItemBase])
+@router.get("/", response_model=list[schema.OrderItem])
 def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
 
-@router.get("/{order_item_id}", response_model=schema.OrderItemBase)
+@router.get("/{order_item_id}", response_model=schema.OrderItem)
 def read_one(order_item_id: int, db: Session = Depends(get_db)):
     return controller.read_one(db, order_item_id=order_item_id)
 
 
-@router.put("/{order_item_id}", response_model=schema.OrderItemBase)
+@router.put("/{order_item_id}", response_model=schema.OrderItem)
 def update(order_item_id: int, request: schema.OrderItemUpdate, db: Session = Depends(get_db)):
     return controller.update(db=db, order_item=request, order_item_id=order_item_id)
 

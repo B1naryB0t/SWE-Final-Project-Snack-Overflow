@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class PaymentBase(BaseModel):
-	id: int
 	status: str
 	type: str
 	transaction_id: str
@@ -29,6 +28,13 @@ class PaymentUpdate(BaseModel):
 	type: Optional[str] = None
 	transaction_id: Optional[str] = None
 	order_id: Optional[int] = None
+
+	class ConfigDict:
+		from_attributes = True
+
+
+class Payment(PaymentBase):
+	id: int
 
 	class ConfigDict:
 		from_attributes = True

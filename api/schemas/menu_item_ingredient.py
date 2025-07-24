@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class MenuItemIngredientBase(BaseModel):
-	id: int
 	menu_item_id: int
 	ingredient_id: int
 
@@ -26,3 +25,11 @@ class MenuItemIngredientUpdate(BaseModel):
 
 	class ConfigDict:
 		from_attributes = True
+
+
+class MenuItemIngredient(MenuItemIngredientBase):
+	id: int
+
+	class ConfigDict:
+		from_attributes = True
+		orm_mode = True

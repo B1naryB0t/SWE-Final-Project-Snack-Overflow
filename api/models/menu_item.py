@@ -13,4 +13,6 @@ class MenuItem(Base):
 	price = Column(Float, nullable=False)
 	calories = Column(Integer, nullable=False)
 
-	order_item = relationship("OrderItem", back_populates="menu_item")
+	order_items = relationship("OrderItem", back_populates="menu_item")
+	ingredients = relationship("MenuItemIngredient", back_populates="menu_item")
+	reviews = relationship("Review", back_populates="menu_item")

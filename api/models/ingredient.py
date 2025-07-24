@@ -12,4 +12,4 @@ class Ingredient(Base):
 	quantity = Column(Float, nullable=False)
 	unit = Column(String(50), nullable=False)
 
-	menu_item_ingredient = relationship("MenuItemIngredient", back_populates="ingredient")
+	menu_items = relationship("MenuItemIngredient", back_populates="ingredient")

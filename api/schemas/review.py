@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class ReviewBase(BaseModel):
-	id: int
 	rating: int
 	comment: str
 	customer_id: int
@@ -29,6 +28,13 @@ class ReviewUpdate(BaseModel):
 	comment: Optional[str] = None
 	customer_id: Optional[int] = None
 	menu_item_id: Optional[int] = None
+
+	class ConfigDict:
+		from_attributes = True
+
+
+class Review(ReviewBase):
+	id: int
 
 	class ConfigDict:
 		from_attributes = True

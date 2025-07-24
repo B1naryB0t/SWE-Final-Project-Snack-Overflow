@@ -13,5 +13,6 @@ class Order(Base):
 	total = Column(Float, nullable=False)
 	customer_id = Column(Integer, ForeignKey("customer.id"))
 
-	order_item = relationship("OrderItem", back_populates="order")
-	payment = relationship("Payment", back_populates="order")
+	customer = relationship("Customer", back_populates="orders")
+	order_items = relationship("OrderItem", back_populates="order")
+	payments = relationship("Payment", back_populates="order")

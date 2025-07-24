@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class MenuItemBase(BaseModel):
-	id: int
 	name: str
 	category: str
 	price: float
@@ -29,6 +28,13 @@ class MenuItemUpdate(BaseModel):
 	category: Optional[str] = None
 	price: Optional[float] = None
 	calories: Optional[int] = None
+
+	class ConfigDict:
+		from_attributes = True
+
+
+class MenuItem(MenuItemBase):
+	id: int
 
 	class ConfigDict:
 		from_attributes = True

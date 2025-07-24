@@ -11,22 +11,22 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=schema.ReviewBase)
+@router.post("/", response_model=schema.Review)
 def create(request: schema.ReviewCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, review=request)
 
 
-@router.get("/", response_model=list[schema.ReviewBase])
+@router.get("/", response_model=list[schema.Review])
 def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
 
-@router.get("/{review_id}", response_model=schema.ReviewBase)
+@router.get("/{review_id}", response_model=schema.Review)
 def read_one(review_id: int, db: Session = Depends(get_db)):
     return controller.read_one(db, review_id=review_id)
 
 
-@router.put("/{review_id}", response_model=schema.ReviewBase)
+@router.put("/{review_id}", response_model=schema.Review)
 def update(review_id: int, request: schema.ReviewUpdate, db: Session = Depends(get_db)):
     return controller.update(db=db, review=request, review_id=review_id)
 
