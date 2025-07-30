@@ -27,6 +27,14 @@ def read_one(db: Session, order_id):
 	return db.query(model.Order).filter(model.Order.id == order_id).first()
 
 
+def read_by_date_range(db: Session, start_date, end_date):
+	return db.query(model.Order).filter(model.Order.date.between(start_date, end_date)).all()
+
+
+def read_by_tracking_number(db: Session, tracking_number: int):
+	return db.query(model.Order).filter(model.Order.tracking_number == tracking_number).first()
+
+
 def update(db: Session, order_id, order):
 	db_order = db.query(model.Order).filter(model.Order.id == order_id)
 	update_data = order.model_dump(exclude_unset=True)

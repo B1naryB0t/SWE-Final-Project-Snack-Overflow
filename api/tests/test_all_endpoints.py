@@ -1,3 +1,5 @@
+import random
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -56,12 +58,13 @@ def test_data():
 		"status": "pending",
 		"total": 15.0,
 		"order_type": "takeout",
-		"tracking_number": 123456,
+		"tracking_number": random.randint(0, 9999),
 		"customer_id": data["customer_id"]
 	}
 	r = client.post("/order/", json=order)
 	assert r.status_code in (200, 201)
 	data["order_id"] = r.json()["id"]
+	data["tracking_number"] = r.json()["tracking_number"]
 
 	# Add Menu Item to Order
 	order_item = {
@@ -86,7 +89,7 @@ def test_data():
 
 	# Add Promotion
 	promo = {
-		"code": "SUMMER25",
+		"code": str(random.randint(1, 100)),    # Random code for uniqueness
 		"discount_amount": 25.0,
 		"expiration_date": "2025-12-31"
 	}
@@ -132,6 +135,16 @@ def test_delete_review(test_data):
 def test_delete_payment(test_data):
 	r = client.delete(f"/payment/{test_data['payment_id']}")
 	assert r.status_code in (200, 204)
+
+
+def test_read_order_date_range(test_data):
+	r = client.get(f"/order?start_date=2025-01-01&end_date=2025-12-31")
+	assert r.status_code == 200
+
+
+def test_read_order_by_tracking(test_data):
+	r = client.get(f"/order/track/{test_data['tracking_number']}")
+	assert r.status_code == 200
 
 
 def test_delete_order_item(test_data):
