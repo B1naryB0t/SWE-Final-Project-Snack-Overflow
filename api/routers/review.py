@@ -26,6 +26,11 @@ def read_one(review_id: int, db: Session = Depends(get_db)):
 	return controller.read_one(db, review_id=review_id)
 
 
+@router.get("/menu/{menu_item_id}", response_model=list[schema.Review])
+def read_by_menu_item(menu_item_id: int, db: Session = Depends(get_db)):
+	return controller.read_by_menu_item(db, menu_item_id=menu_item_id)
+
+
 @router.put("/{review_id}", response_model=schema.Review)
 def update(review_id: int, request: schema.ReviewUpdate, db: Session = Depends(get_db)):
 	return controller.update(db=db, review=request, review_id=review_id)

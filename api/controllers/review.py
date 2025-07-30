@@ -25,6 +25,10 @@ def read_one(db: Session, review_id):
 	return db.query(model.Review).filter(model.Review.id == review_id).first()
 
 
+def read_by_menu_item(db: Session, menu_item_id):
+	return db.query(model.Review).filter(model.Review.menu_item_id == menu_item_id).all()
+
+
 def update(db: Session, review_id, review):
 	db_review = db.query(model.Review).filter(model.Review.id == review_id)
 	update_data = review.model_dump(exclude_unset=True)

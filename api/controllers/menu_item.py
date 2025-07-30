@@ -2,6 +2,7 @@ from fastapi import status, Response
 from sqlalchemy.orm import Session
 
 from ..models import menu_item as model
+from ..models import review as model_review
 
 
 def create(db: Session, menu_item):
@@ -23,6 +24,14 @@ def read_all(db: Session):
 
 def read_one(db: Session, menu_item_id):
 	return db.query(model.MenuItem).filter(model.MenuItem.id == menu_item_id).first()
+
+
+def read_by_category(db: Session, category: str):
+	return db.query(model.MenuItem).filter(model.MenuItem.category == category).all()
+
+
+def read_by_rating(db: Session, rating: int):
+	return db.query(model.MenuItem).join(model_review.Review).filter(model_review.Review.rating == rating).all()
 
 
 def update(db: Session, menu_item_id, menu_item):

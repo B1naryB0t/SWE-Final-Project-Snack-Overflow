@@ -127,6 +127,11 @@ def test_update_review(test_data):
 	assert r.status_code == 200
 
 
+def test_read_review_by_menu_item(test_data):
+	r = client.get(f"/review/menu/{test_data['menu_item_id']}")
+	assert r.status_code == 200
+
+
 def test_delete_review(test_data):
 	r = client.delete(f"/review/{test_data['review_id']}")
 	assert r.status_code in (200, 204)
@@ -160,6 +165,16 @@ def test_delete_order(test_data):
 def test_delete_menu_item_ingredient(test_data):
 	r = client.delete(f"/menu_item_ingredient/{test_data['mii_id']}")
 	assert r.status_code in (200, 204)
+
+
+def test_read_meny_item_by_category(test_data):
+	r = client.get(f"/menu_item/by_category/Appetizer")
+	assert r.status_code == 200
+
+
+def test_read_menu_item_by_rating(test_data):
+	r = client.get(f"/menu_item/by_rating/4")
+	assert r.status_code == 200
 
 
 def test_delete_menu_item(test_data):
