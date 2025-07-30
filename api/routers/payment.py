@@ -34,3 +34,8 @@ def update(payment_id: int, request: schema.PaymentUpdate, db: Session = Depends
 @router.delete("/{payment_id}")
 def delete(payment_id: int, db: Session = Depends(get_db)):
 	return controller.delete(db=db, payment_id=payment_id)
+
+
+@router.get("/revenue/", response_model=schema.Revenue)
+def get_revenue(start_date: str, end_date: str, db: Session = Depends(get_db)):
+	return controller.get_revenue(db=db, start_date=start_date, end_date=end_date)

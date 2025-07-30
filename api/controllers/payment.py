@@ -1,7 +1,9 @@
 from fastapi import status, Response
 from sqlalchemy.orm import Session
+from datetime import datetime
 
 from ..models import payment as model
+from ..models import order as order_model
 
 
 def create(db: Session, payment):
@@ -9,6 +11,7 @@ def create(db: Session, payment):
 		status=payment.status,
 		type=payment.type,
 		transaction_id=payment.transaction_id,
+		total=payment.total,
 		order_id=payment.order_id
 	)
 	db.add(db_payment)
@@ -38,3 +41,21 @@ def delete(db: Session, payment_id):
 	db_payment.delete(synchronize_session=False)
 	db.commit()
 	return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+def get_revenue(db: Session, start_date: str, end_date: str):
+	# Join the Payment and Order tables
+	query = db.query(model.Payment).join(order_model.Order).filter(
+		order_model.Order.date >= datetime.strptime(start_date, '%Y-%m-%d'),
+		order_model.Order.date <= datetime.strptime(end_date, '%Y-%m-%d')
+	).all()
+
+	total_revenue = sum(payment.total for payment in query)
+	total_orders = len(query)
+	total_customers = len(set(payment.order.customer_id for payment in query))
+
+	return {
+		'total_revenue': total_revenue,
+		'total_orders': total_orders,
+		'total_customers': total_customers
+	}

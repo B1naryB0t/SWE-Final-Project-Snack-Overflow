@@ -81,6 +81,7 @@ def test_data():
 		"order_id": data["order_id"],
 		"status": "paid",
 		"type": "credit_card",
+		"total": 15.0,
 		"transaction_id": "txn_001"
 	}
 	r = client.post("/payment/", json=payment)
@@ -143,7 +144,7 @@ def test_delete_payment(test_data):
 
 
 def test_read_order_date_range(test_data):
-	r = client.get(f"/order?start_date=2025-01-01&end_date=2025-12-31")
+	r = client.get("/order?start_date=2025-01-01&end_date=2025-12-31")
 	assert r.status_code == 200
 
 
@@ -195,3 +196,11 @@ def test_delete_promotion(test_data):
 def test_delete_customer(test_data):
 	r = client.delete(f"/customer/{test_data['customer_id']}")
 	assert r.status_code in (200, 204)
+
+
+def test_get_revenue(test_data):
+	r = client.get("/payment/revenue/?start_date=2025-01-01&end_date=2025-12-31")
+	assert r.status_code == 200
+	assert "total_revenue" in r.json()
+	assert "total_orders" in r.json()
+	assert "total_customers" in r.json()
