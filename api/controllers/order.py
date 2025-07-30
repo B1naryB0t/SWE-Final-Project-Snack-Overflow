@@ -9,6 +9,8 @@ def create(db: Session, order):
 		date=order.date,
 		status=order.status,
 		total=order.total,
+		order_type=order.order_type,
+		tracking_number=order.tracking_number,
 		customer_id=order.customer_id
 	)
 	db.add(db_order)

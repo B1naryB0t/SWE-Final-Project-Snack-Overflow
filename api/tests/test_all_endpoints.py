@@ -55,6 +55,8 @@ def test_data():
 		"date": "2025-07-24",
 		"status": "pending",
 		"total": 15.0,
+		"order_type": "takeout",
+		"tracking_number": 123456,
 		"customer_id": data["customer_id"]
 	}
 	r = client.post("/order/", json=order)

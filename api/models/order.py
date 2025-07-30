@@ -11,6 +11,8 @@ class Order(Base):
 	date = Column(DateTime, nullable=False)
 	status = Column(String(20), nullable=False)
 	total = Column(Float, nullable=False)
+	order_type = Column(String(20), nullable=False)
+	tracking_number = Column(Integer, nullable=True, unique=True)
 	customer_id = Column(Integer, ForeignKey("customer.id"))
 
 	customer = relationship("Customer", back_populates="orders")
