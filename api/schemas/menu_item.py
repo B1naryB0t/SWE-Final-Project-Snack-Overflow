@@ -1,7 +1,8 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
+from .ingredient import Ingredient
 
 class MenuItemBase(BaseModel):
 	name: str
@@ -18,6 +19,7 @@ class MenuItemCreate(MenuItemBase):
 	category: str
 	price: float
 	calories: int
+	ingredient_ids: Optional[List[int]] = None
 
 	class ConfigDict:
 		from_attributes = True
@@ -35,6 +37,7 @@ class MenuItemUpdate(BaseModel):
 
 class MenuItem(MenuItemBase):
 	id: int
+	ingredients: List[Ingredient] = []
 
 	class ConfigDict:
 		from_attributes = True

@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from ..models import menu_item as model
 from ..models import review as model_review
+from ..models import menu_item_ingredient as mii_model
+from ..models.ingredient import Ingredient
 
 
 def create(db: Session, menu_item):
@@ -15,6 +17,12 @@ def create(db: Session, menu_item):
 	db.add(db_menu_item)
 	db.commit()
 	db.refresh(db_menu_item)
+
+	if menu_item.ingredient_ids:
+		db_menu_item.ingredient_objects = db.query(Ingredient).filter(
+			Ingredient.id.in_(menu_item.ingredient_ids)
+		).all()
+		db.commit()
 	return db_menu_item
 
 
