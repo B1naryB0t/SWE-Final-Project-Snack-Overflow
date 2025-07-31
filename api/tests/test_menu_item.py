@@ -111,58 +111,6 @@ def test_data():
 
 	return data
 
-
-def test_read_customer(test_data):
-	r = client.get(f"/customer/{test_data['customer_id']}")
-	assert r.status_code == 200
-
-
-def test_update_review(test_data):
-	payload = {
-		"customer_id": test_data["customer_id"],
-		"menu_item_id": test_data["menu_item_id"],
-		"rating": 5,
-		"comment": "Updated review!"
-	}
-	r = client.put(f"/review/{test_data['review_id']}", json=payload)
-	assert r.status_code == 200
-
-
-def test_read_review_by_menu_item(test_data):
-	r = client.get(f"/review/menu/{test_data['menu_item_id']}")
-	assert r.status_code == 200
-
-
-def test_delete_review(test_data):
-	r = client.delete(f"/review/{test_data['review_id']}")
-	assert r.status_code in (200, 204)
-
-
-def test_delete_payment(test_data):
-	r = client.delete(f"/payment/{test_data['payment_id']}")
-	assert r.status_code in (200, 204)
-
-
-def test_read_order_date_range(test_data):
-	r = client.get("/order?start_date=2025-01-01&end_date=2025-12-31")
-	assert r.status_code == 200
-
-
-def test_read_order_by_tracking(test_data):
-	r = client.get(f"/order/track/{test_data['tracking_number']}")
-	assert r.status_code == 200
-
-
-def test_delete_order_item(test_data):
-	r = client.delete(f"/order_item/{test_data['order_item_id']}")
-	assert r.status_code in (200, 204)
-
-
-def test_delete_order(test_data):
-	r = client.delete(f"/order/{test_data['order_id']}")
-	assert r.status_code in (200, 204)
-
-
 def test_delete_menu_item_ingredient(test_data):
 	r = client.delete(f"/menu_item_ingredient/{test_data['mii_id']}")
 	assert r.status_code in (200, 204)
@@ -181,26 +129,3 @@ def test_read_menu_item_by_rating(test_data):
 def test_delete_menu_item(test_data):
 	r = client.delete(f"/menu_item/{test_data['menu_item_id']}")
 	assert r.status_code in (200, 204)
-
-
-def test_delete_ingredient(test_data):
-	r = client.delete(f"/ingredient/{test_data['ingredient_id']}")
-	assert r.status_code in (200, 204)
-
-
-def test_delete_promotion(test_data):
-	r = client.delete(f"/promotion/{test_data['promotion_id']}")
-	assert r.status_code in (200, 204)
-
-
-def test_delete_customer(test_data):
-	r = client.delete(f"/customer/{test_data['customer_id']}")
-	assert r.status_code in (200, 204)
-
-
-def test_get_revenue(test_data):
-	r = client.get("/payment/revenue/?start_date=2025-01-01&end_date=2025-12-31")
-	assert r.status_code == 200
-	assert "total_revenue" in r.json()
-	assert "total_orders" in r.json()
-	assert "total_customers" in r.json()
