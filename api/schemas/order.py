@@ -10,7 +10,7 @@ class OrderBase(BaseModel):
 	total: float
 	order_type: str
 	tracking_number: int
-	customer_id: int
+	customer_id: Optional[int] = None
 
 	class ConfigDict:
 		from_attributes = True
