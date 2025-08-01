@@ -114,3 +114,4 @@ def test_data():
 def test_delete_ingredient(test_data):
 	r = client.delete(f"/ingredient/{test_data['ingredient_id']}")
 	assert r.status_code in (200, 204)
+	assert client.get(f"/ingredient/ingredient_id").status_code in (404, 422)

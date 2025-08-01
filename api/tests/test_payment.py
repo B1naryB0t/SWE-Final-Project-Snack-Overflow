@@ -117,3 +117,4 @@ def test_data():
 def test_delete_payment(test_data):
 	r = client.delete(f"/payment/{test_data['payment_id']}")
 	assert r.status_code in (200, 204)
+	assert client.get(f"/payment/{'payment_id'}").status_code in (404, 422)
