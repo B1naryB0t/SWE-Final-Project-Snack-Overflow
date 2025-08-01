@@ -2,18 +2,41 @@ from fastapi import status, Response
 from sqlalchemy.orm import Session
 
 from ..models import order_item as model
+from fastapi import HTTPException
+from ..models import menu_item_ingredient as mii_model
+from ..models import ingredient as ingredient_model
+from ..models import menu_item as menu_model
 
 
 def create(db: Session, order_item):
-	db_order_item = model.OrderItem(
-		quantity=order_item.quantity,
-		order_id=order_item.order_id,
-		menu_item_id=order_item.menu_item_id
-	)
-	db.add(db_order_item)
-	db.commit()
-	db.refresh(db_order_item)
-	return db_order_item
+    menu_item = db.query(menu_model.MenuItem).filter(menu_model.MenuItem.id == order_item.menu_item_id).first()
+    if not menu_item:
+        raise HTTPException(status_code=404, detail="Menu item not found")
+
+    for mii in menu_item.ingredients:
+        required_qty = mii.quantity_required * order_item.quantity
+        available_qty = mii.ingredient.quantity
+
+        if available_qty < required_qty:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Insufficient ingredient: {mii.ingredient.name} (required: {required_qty}, available: {available_qty})"
+            )
+
+    # All ingredients are available – deduct and commit
+    for mii in menu_item.ingredients:
+        required_qty = mii.quantity_required * order_item.quantity
+        mii.ingredient.quantity -= required_qty
+
+    db_order_item = model.OrderItem(
+        quantity=order_item.quantity,
+        order_id=order_item.order_id,
+        menu_item_id=order_item.menu_item_id
+    )
+    db.add(db_order_item)
+    db.commit()
+    db.refresh(db_order_item)
+    return db_order_item
 
 
 def read_all(db: Session):

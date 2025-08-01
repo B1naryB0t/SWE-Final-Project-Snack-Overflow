@@ -118,8 +118,10 @@ def test_update_review(test_data):
 		"rating": 5,
 		"comment": "Updated review!"
 	}
+	before = client.get(f"/review/{test_data['review_id']}")
 	r = client.put(f"/review/{test_data['review_id']}", json=payload)
 	assert r.status_code == 200
+	assert r.json()["comment"] != before.json()["comment"]
 
 
 def test_read_review_by_menu_item(test_data):
@@ -130,4 +132,5 @@ def test_read_review_by_menu_item(test_data):
 def test_delete_review(test_data):
 	r = client.delete(f"/review/{test_data['review_id']}")
 	assert r.status_code in (200, 204)
+	assert client.get(f"/review/review_id").status_code in (404, 422)
 

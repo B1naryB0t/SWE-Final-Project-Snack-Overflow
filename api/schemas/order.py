@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -17,15 +17,11 @@ class OrderBase(BaseModel):
 
 
 class OrderCreate(OrderBase):
-	date: datetime
-	status: str
-	total: float
-	order_type: str
-	tracking_number: int
-	customer_id: int
+    menu_item_ids: List[int]
+    promotion_code: Optional[str] = None
 
-	class ConfigDict:
-		from_attributes = True
+    class ConfigDict:
+        from_attributes = True
 
 
 class OrderUpdate(BaseModel):

@@ -119,3 +119,5 @@ def test_get_revenue(test_data):
 	assert "total_revenue" in r.json()
 	assert "total_orders" in r.json()
 	assert "total_customers" in r.json()
+	assert r.json()["total_customers"] in range(0 , 9999)
+
