@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class MenuItemIngredientBase(BaseModel):
 	menu_item_id: int
 	ingredient_id: int
+	quantity_required: float
 
 	class ConfigDict:
 		from_attributes = True
@@ -14,6 +15,7 @@ class MenuItemIngredientBase(BaseModel):
 class MenuItemIngredientCreate(MenuItemIngredientBase):
 	menu_item_id: int
 	ingredient_id: int
+	quantity_required: float
 
 	class ConfigDict:
 		from_attributes = True
@@ -22,6 +24,7 @@ class MenuItemIngredientCreate(MenuItemIngredientBase):
 class MenuItemIngredientUpdate(BaseModel):
 	menu_item_id: Optional[int] = None
 	ingredient_id: Optional[int] = None
+	quantity_required: Optional[float] = None
 
 	class ConfigDict:
 		from_attributes = True

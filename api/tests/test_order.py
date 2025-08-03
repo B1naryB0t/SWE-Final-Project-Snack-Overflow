@@ -119,14 +119,15 @@ def test_read_order_date_range(test_data):
 def test_read_order_by_tracking(test_data):
 	r = client.get(f"/order/track/{test_data['tracking_number']}")
 	assert r.status_code == 200
-
+	assert r.json()["tracking_number"] in range(0 , 9999)
 
 def test_delete_order_item(test_data):
 	r = client.delete(f"/order_item/{test_data['order_item_id']}")
 	assert r.status_code in (200, 204)
+	assert client.get(f"/order_item/{'order_item_id'}").status_code in (404, 422)
 
 
 def test_delete_order(test_data):
 	r = client.delete(f"/order/{test_data['order_id']}")
 	assert r.status_code in (200, 204)
-
+	assert client.get(f"/order/{'order_id'}").status_code in (404 , 422)

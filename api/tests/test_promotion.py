@@ -1,9 +1,11 @@
 import random
 
 import pytest
+import uuid
 from fastapi.testclient import TestClient
 
 from ..main import app
+
 
 client = TestClient(app)
 
@@ -90,7 +92,7 @@ def test_data():
 
 	# Add Promotion
 	promo = {
-		"code": str(random.randint(1, 100)),    # Random code for uniqueness
+		"code": str(uuid.uuid4()), # Random code for uniqueness
 		"discount_amount": 25.0,
 		"expiration_date": "2025-12-31"
 	}
@@ -114,3 +116,4 @@ def test_data():
 def test_delete_promotion(test_data):
 	r = client.delete(f"/promotion/{test_data['promotion_id']}")
 	assert r.status_code in (200, 204)
+	assert client.get(f"/promotion/{'promotion_id'}").status_code in (404, 422)
