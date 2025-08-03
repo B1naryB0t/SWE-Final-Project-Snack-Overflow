@@ -36,3 +36,4 @@ class Promotion(PromotionBase):
 
 	class ConfigDict:
 		from_attributes = True
+

@@ -123,7 +123,11 @@ def test_delete_menu_item_ingredient(test_data):
 def test_read_menu_item_by_category(test_data):
 	r = client.get(f"/menu_item/by_category/Appetizer")
 	assert r.status_code == 200
-
+	items = r.json()
+	assert any(item["name"] == "Caesar Salad" for item in items)
+	r = client.get("/menu_item/by_category/Dessert")
+	assert r.status_code == 200
+	assert r.json() == []
 
 def test_read_menu_item_by_rating(test_data):
 	r = client.get(f"/menu_item/by_rating/4")

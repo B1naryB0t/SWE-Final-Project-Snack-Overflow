@@ -133,3 +133,36 @@ def test_delete_order(test_data):
 	r = client.delete(f"/order/{test_data['order_id']}")
 	assert r.status_code in (200, 204)
 	assert client.get(f"/order/{'order_id'}").status_code in (404 , 422)
+
+
+def test_place_order(test_data):
+	order_payload = {
+		"date": "2025-08-02T00:00:00",
+        "status": "pending",
+        "total": 12.0,
+        "order_type": "takeout",
+        "tracking_number": random.randint(0, 9999),
+        "customer_id": test_data["customer_id"],
+        "menu_item_ids": [test_data["menu_item_id"]]
+    }
+	r = client.post("/order", json=order_payload)
+	assert r.status_code == 200
+
+def test_track_order_status(test_data):
+	order_id = test_data["order_id"]
+
+	r = client.get(f"/order/{order_id}")
+	assert r.status_code == 200
+
+	order = r.json()
+	assert "status" in order
+	assert isinstance(order["status"], str)
+	assert order["status"] in ["pending", "completed", "cancelled", "shipped", "delivered"]
+
+	tracking_number = test_data["tracking_number"]
+	r2 = client.get(f"/order/track/{tracking_number}")
+	assert r2.status_code == 200
+
+	order2 = r2.json()
+	assert "status" in order2
+	assert order2["status"] == order["status"]
