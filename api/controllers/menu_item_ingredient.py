@@ -7,7 +7,8 @@ from ..models import menu_item_ingredient as model
 def create(db: Session, menu_item_ingredient):
 	db_mii = model.MenuItemIngredient(
 		menu_item_id=menu_item_ingredient.menu_item_id,
-		ingredient_id=menu_item_ingredient.ingredient_id
+		ingredient_id=menu_item_ingredient.ingredient_id,
+		quantity=menu_item_ingredient.quantity
 	)
 	db.add(db_mii)
 	db.commit()

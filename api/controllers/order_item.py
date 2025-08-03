@@ -13,8 +13,8 @@ def create(db: Session, order_item):
     if not menu_item:
         raise HTTPException(status_code=404, detail="Menu item not found")
 
-    for mii in menu_item.ingredients:
-        required_qty = mii.quantity_required * order_item.quantity
+    for mii in menu_item.menu_item_ingredients:  # FIXED HERE
+        required_qty = mii.quantity * order_item.quantity  # Use mii.quantity (not quantity_required)
         available_qty = mii.ingredient.quantity
 
         if available_qty < required_qty:
@@ -24,8 +24,8 @@ def create(db: Session, order_item):
             )
 
     # All ingredients are available – deduct and commit
-    for mii in menu_item.ingredients:
-        required_qty = mii.quantity_required * order_item.quantity
+    for mii in menu_item.menu_item_ingredients:  # FIXED HERE
+        required_qty = mii.quantity * order_item.quantity
         mii.ingredient.quantity -= required_qty
 
     db_order_item = model.OrderItem(
@@ -40,23 +40,23 @@ def create(db: Session, order_item):
 
 
 def read_all(db: Session):
-	return db.query(model.OrderItem).all()
+    return db.query(model.OrderItem).all()
 
 
 def read_one(db: Session, order_item_id):
-	return db.query(model.OrderItem).filter(model.OrderItem.id == order_item_id).first()
+    return db.query(model.OrderItem).filter(model.OrderItem.id == order_item_id).first()
 
 
 def update(db: Session, order_item_id, order_item):
-	db_order_item = db.query(model.OrderItem).filter(model.OrderItem.id == order_item_id)
-	update_data = order_item.model_dump(exclude_unset=True)
-	db_order_item.update(update_data, synchronize_session=False)
-	db.commit()
-	return db_order_item.first()
+    db_order_item = db.query(model.OrderItem).filter(model.OrderItem.id == order_item_id)
+    update_data = order_item.model_dump(exclude_unset=True)
+    db_order_item.update(update_data, synchronize_session=False)
+    db.commit()
+    return db_order_item.first()
 
 
 def delete(db: Session, order_item_id):
-	db_order_item = db.query(model.OrderItem).filter(model.OrderItem.id == order_item_id)
-	db_order_item.delete(synchronize_session=False)
-	db.commit()
-	return Response(status_code=status.HTTP_204_NO_CONTENT)
+    db_order_item = db.query(model.OrderItem).filter(model.OrderItem.id == order_item_id)
+    db_order_item.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

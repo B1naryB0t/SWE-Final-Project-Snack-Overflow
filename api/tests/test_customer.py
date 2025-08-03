@@ -45,7 +45,8 @@ def test_data():
 	# Link Ingredient to Menu Item
 	mii = {
 		"menu_item_id": data["menu_item_id"],
-		"ingredient_id": data["ingredient_id"]
+		"ingredient_id": data["ingredient_id"],
+		"quantity": 10.0  # Added required field
 	}
 	r = client.post("/menu_item_ingredient/", json=mii)
 	assert r.status_code in (200, 201)
@@ -58,7 +59,8 @@ def test_data():
 		"total": 15.0,
 		"order_type": "takeout",
 		"tracking_number": random.randint(0, 9999),
-		"customer_id": data["customer_id"]
+		"customer_id": data["customer_id"],
+		"menu_item_ids": [data["menu_item_id"]]
 	}
 	r = client.post("/order/", json=order)
 	assert r.status_code in (200, 201)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.orm import Session
 
 from ..controllers import ingredient as controller
@@ -31,6 +31,7 @@ def update(ingredient_id: int, request: schema.IngredientUpdate, db: Session = D
 	return controller.update(db=db, ingredient=request, ingredient_id=ingredient_id)
 
 
-@router.delete("/{ingredient_id}")
+@router.delete("/{ingredient_id}", status_code=204, response_model=None)
 def delete(ingredient_id: int, db: Session = Depends(get_db)):
-	return controller.delete(db=db, ingredient_id=ingredient_id)
+    controller.delete(db=db, ingredient_id=ingredient_id)
+    return Response(status_code=204)
