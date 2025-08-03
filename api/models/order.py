@@ -21,4 +21,3 @@ class Order(Base):
 
     promotion_id = Column(Integer, ForeignKey("promotion_id"))
     promotion = relationship("Promotion")
-
