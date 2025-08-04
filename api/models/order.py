@@ -14,6 +14,9 @@ class Order(Base):
 	order_type = Column(String(20), nullable=False)
 	tracking_number = Column(Integer, nullable=True, unique=True)
 	customer_id = Column(Integer, ForeignKey("customer.id"), nullable=True)
+	guest_name = Column(String(100), nullable=True)
+	guest_email = Column(String(100), nullable=True)
+	guest_phone = Column(String(20), nullable=True)
 
 	customer = relationship("Customer", back_populates="orders")
 	order_items = relationship("OrderItem", back_populates="order")

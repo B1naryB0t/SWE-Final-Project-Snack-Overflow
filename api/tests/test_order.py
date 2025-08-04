@@ -56,3 +56,41 @@ def test_track_order_status(client, test_data):
 	order2 = r2.json()
 	assert "status" in order2
 	assert order2["status"] == order["status"]
+
+def test_guest_checkout(client, test_data):
+    order_payload = {
+        "date": "2025-08-02T00:00:00",
+        "status": "pending",
+        "total": 15.0,
+        "order_type": "takeout",
+        "tracking_number": random.randint(10000, 99999),
+        "menu_item_ids": [test_data["menu_item_id"]],
+        # No customer_id!
+        "guest_name": "Guest User",
+        "guest_email": "guest@example.com",
+        "guest_phone": "555-5555"
+    }
+    r = client.post("/order", json=order_payload)
+    assert r.status_code == 200
+    data = r.json()
+    assert data["guest_name"] == "Guest User"
+    assert data["customer_id"] is None
+
+def test_guest_checkout_with_promotion(client, test_data):
+    order_payload = {
+        "date": "2025-08-02T00:00:00",
+        "status": "pending",
+        "total": 20.0,
+        "order_type": "takeout",
+        "tracking_number": random.randint(10000, 99999),
+        "menu_item_ids": [test_data["menu_item_id"]],
+        "guest_name": "Promo Guest",
+        "guest_email": "promo@example.com",
+        "guest_phone": "555-1234",
+        "promotion_id": test_data["promotion_id"]
+    }
+    r = client.post("/order", json=order_payload)
+    assert r.status_code == 200
+    data = r.json()
+    assert data["guest_name"] == "Promo Guest"
+    assert data["promotion_id"] == test_data["promotion_id"]

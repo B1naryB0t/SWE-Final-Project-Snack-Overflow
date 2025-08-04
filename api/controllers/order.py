@@ -9,73 +9,75 @@ from ..schemas.order import OrderCreate
 
 
 def create(db: Session, order: OrderCreate):
-	menu_items = db.query(menu_item.MenuItem).filter(menu_item.MenuItem.id.in_(order.menu_item_ids)).all()
-	if len(menu_items) != len(order.menu_item_ids):
-		raise HTTPException(
-			status_code=404,
-			detail="One or more menu items not found"
-		)
+    menu_items = db.query(menu_item.MenuItem).filter(menu_item.MenuItem.id.in_(order.menu_item_ids)).all()
+    if len(menu_items) != len(order.menu_item_ids):
+        raise HTTPException(
+            status_code=404,
+            detail="One or more menu items not found"
+        )
 
-	required_ingredients = {}
-	for item in menu_items:
-		for mii in item.menu_item_ingredients:
-			ingr = mii.ingredient
-			if ingr.id not in required_ingredients:
-				required_ingredients[ingr.id] = 0
-			required_ingredients[ingr.id] += mii.quantity  # Use the correct quantity
+    required_ingredients = {}
+    for item in menu_items:
+        for mii in item.menu_item_ingredients:
+            ingr = mii.ingredient
+            if ingr.id not in required_ingredients:
+                required_ingredients[ingr.id] = 0
+            required_ingredients[ingr.id] += mii.quantity
 
-	for ingr_id, required_qty in required_ingredients.items():
-		ingr = db.query(ingredient.Ingredient).get(ingr_id)
-		if ingr.quantity < required_qty:
-			raise HTTPException(
-				status_code=400,
-				detail=f"Not enough '{ingr.name}' in stock."
-			)
+    for ingr_id, required_qty in required_ingredients.items():
+        ingr = db.query(ingredient.Ingredient).get(ingr_id)
+        if ingr.quantity < required_qty:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Not enough '{ingr.name}' in stock."
+            )
 
-	for ingr_id, required_qty in required_ingredients.items():
-		ingr = db.query(ingredient.Ingredient).get(ingr_id)
-		ingr.quantity -= required_qty
+    for ingr_id, required_qty in required_ingredients.items():
+        ingr = db.query(ingredient.Ingredient).get(ingr_id)
+        ingr.quantity -= required_qty
 
-	total_price = sum(item.price for item in menu_items)
+    total_price = sum(item.price for item in menu_items)
 
-	promo_obj = None
-	if order.promotion_code:
-		promo_obj = db.query(promotion.Promotion).filter(
-			promotion.Promotion.code == order.promotion_code,
-			promotion.Promotion.expiration_date >= datetime.utcnow()
-		).first()
+    promo_obj = None
+    if order.promotion_id:
+        promo_obj = db.query(promotion.Promotion).filter(
+            promotion.Promotion.id == order.promotion_id,
+            promotion.Promotion.expiration_date >= datetime.utcnow()
+        ).first()
+        if not promo_obj:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid or expired promotion"
+            )
+        total_price -= promo_obj.discount_amount
+        total_price = max(total_price, 0)
 
-		if not promo_obj:
-			raise HTTPException(
-				status_code=400,
-				detail="Invalid or expired promotion code"
-			)
-		total_price -= promo_obj.discount_amount
-		total_price = max(total_price, 0)
+    db_order = model.Order(
+        date=order.date,
+        status=order.status,
+        total=total_price,
+        order_type=order.order_type,
+        tracking_number=order.tracking_number,
+        customer_id=order.customer_id,
+        guest_name=order.guest_name,
+        guest_email=order.guest_email,
+        guest_phone=order.guest_phone,
+        promotion=promo_obj
+    )
+    db.add(db_order)
+    db.commit()
+    db.refresh(db_order)
 
-	db_order = model.Order(
-		date=order.date,
-		status=order.status,
-		total=total_price,
-		order_type=order.order_type,
-		tracking_number=order.tracking_number,
-		customer_id=order.customer_id,
-		promotion=promo_obj
-	)
-	db.add(db_order)
-	db.commit()
-	db.refresh(db_order)
+    for item in menu_items:
+        db_order_item = order_item.OrderItem(
+            order_id=db_order.id,
+            menu_item_id=item.id,
+            quantity=1
+        )
+        db.add(db_order_item)
 
-	for item in menu_items:
-		db_order_item = order_item.OrderItem(
-			order_id=db_order.id,
-			menu_item_id=item.id,
-			quantity=1
-		)
-		db.add(db_order_item)
-
-	db.commit()
-	return db_order
+    db.commit()
+    return db_order
 
 
 def read_all(db: Session):

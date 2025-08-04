@@ -25,10 +25,9 @@ def read_all(db: Session = Depends(get_db)):
 def read_one(order_id: int, db: Session = Depends(get_db)):
 	return controller.read_one(db, order_id=order_id)
 
-
-@router.get("/", response_model=list[schema.Order])
+@router.get("/by_date/", response_model=list[schema.Order])
 def read_by_date_range(start_date: str, end_date: str, db: Session = Depends(get_db)):
-	return controller.read_by_date_range(db, start_date=start_date, end_date=end_date)
+    return controller.read_by_date_range(db, start_date=start_date, end_date=end_date)
 
 
 @router.get("/track/{tracking_number}", response_model=schema.Order)
