@@ -19,6 +19,18 @@ def test_read_menu_item_by_rating(client, test_data):
 	assert r.status_code == 200
 
 
+
+def test_search_menu_items(client, test_data):
+    r = client.get("/menu_item/search?q=salad")
+    assert r.status_code == 200
+    items = r.json()
+    assert any("salad" in item["name"].lower() for item in items)
+    
+    r = client.get("/menu_item/search?q=notarealitem")
+    assert r.status_code == 200
+    assert r.json() == []
+
+
 def test_delete_menu_item(client, test_data):
 	r = client.delete(f"/menu_item/{test_data['menu_item_ids'][0]}")
 	assert r.status_code in (200, 204)

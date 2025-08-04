@@ -1,5 +1,6 @@
 from fastapi import status, Response
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 from ..models import menu_item as model
 from ..models import review as model_review
@@ -47,3 +48,10 @@ def delete(db: Session, menu_item_id):
 	db_menu_item.delete(synchronize_session=False)
 	db.commit()
 	return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def search_menu_items(db, query):
+    return db.query(model.MenuItem).filter(
+        or_(
+            model.MenuItem.name.ilike(f"%{query}%"),
+        )
+    ).all()
