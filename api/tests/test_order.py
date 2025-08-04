@@ -13,13 +13,13 @@ def test_read_order_by_tracking(client, test_data):
 
 
 def test_delete_order_item(client, test_data):
-	r = client.delete(f"/order_item/{test_data['order_item_ids'][0]}")
+	r = client.delete(f"/order_item/{test_data['order_item_id']}")
 	assert r.status_code in (200, 204)
 	assert client.get(f"/order_item/{'order_item_id'}").status_code in (404, 422)
 
 
 def test_delete_order(client, test_data):
-	r = client.delete(f"/order/{test_data['order_ids'][0]}")
+	r = client.delete(f"/order/{test_data['order_id']}")
 	assert r.status_code in (200, 204)
 	assert client.get(f"/order/{'order_id'}").status_code in (404, 422)
 
@@ -31,15 +31,15 @@ def test_place_order(client, test_data):
 		"total": 12.0,
 		"order_type": "takeout",
 		"tracking_number": random.randint(0, 9999),
-		"customer_id": test_data["customer_ids"][0],
-		"menu_item_ids": [test_data["menu_item_ids"][0]]
+		"customer_id": test_data["customer_id"],
+		"menu_item_ids": [test_data["menu_item_id"]]
 	}
 	r = client.post("/order", json=order_payload)
 	assert r.status_code == 200
 
 
 def test_track_order_status(client, test_data):
-	order_id = test_data["order_ids"][0]
+	order_id = test_data["order_id"]
 
 	r = client.get(f"/order/{order_id}")
 	assert r.status_code == 200
