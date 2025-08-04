@@ -2,7 +2,7 @@ import uuid
 
 
 def test_delete_promotion(client, test_data):
-	r = client.delete(f"/promotion/{test_data['promotion_id']}")
+	r = client.delete(f"/promotion/{test_data['promotion_ids'][0]}")
 	assert r.status_code in (200, 204)
 	assert client.get(f"/promotion/{'promotion_id'}").status_code in (404, 422)
 
