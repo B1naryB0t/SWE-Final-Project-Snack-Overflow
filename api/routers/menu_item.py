@@ -22,6 +22,9 @@ def read_all(db: Session = Depends(get_db)):
 def search_menu_items(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
     return controller.search_menu_items(db, q)
 
+@router.get("/popularity_insights")
+def popularity_insights(db: Session = Depends(get_db)):
+    return controller.get_popularity_insights(db)
 @router.get("/by_category/{category}", response_model=list[schema.MenuItem])
 def read_by_category(category: str, db: Session = Depends(get_db)):
     return controller.read_by_category(db, category=category)
@@ -42,3 +45,4 @@ def update(menu_item_id: int, request: schema.MenuItemUpdate, db: Session = Depe
 def delete_menu_item(menu_item_id: int, db: Session = Depends(get_db)):
     controller.delete(db, menu_item_id=menu_item_id)
     return None
+
