@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel
 
+from .payment import Payment, PaymentCreate  # Import Payment schemas
+
 class OrderBase(BaseModel):
     date: datetime
     status: str
@@ -19,6 +21,7 @@ class OrderBase(BaseModel):
 
 class OrderCreate(OrderBase):
     menu_item_ids: List[int]
+    payments: List[PaymentCreate] = [] 
 
     class ConfigDict:
         from_attributes = True
@@ -40,6 +43,7 @@ class OrderUpdate(BaseModel):
 
 class Order(OrderBase):
     id: int
+    payments: List[Payment] = []  
 
     class ConfigDict:
         from_attributes = True

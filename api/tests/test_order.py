@@ -126,3 +126,36 @@ def test_order_with_invalid_promotion(client, test_data):
     r = client.post("/order", json=order_payload)
     assert r.status_code == 400
     assert "Invalid or expired promotion" in r.text
+
+def test_order_with_multiple_payments(client, test_data):
+    order_payload = {
+        "date": "2025-08-02T00:00:00",
+        "status": "pending",
+        "total": 20.0,
+        "order_type": "takeout",
+        "tracking_number": random.randint(10000, 99999),
+        "menu_item_ids": [test_data["menu_item_id"]],
+        "customer_id": test_data["customer_id"],
+        "payments": [
+            {
+                "status": "completed",
+                "type": "credit_card",
+                "transaction_id": "txn123",
+                "total": 10.0,
+                "order_id": 0  
+            },
+            {
+                "status": "completed",
+                "type": "cash",
+                "transaction_id": "txn124",
+                "total": 10.0,
+                "order_id": 0
+            }
+        ]
+    }
+    r = client.post("/order", json=order_payload)
+    assert r.status_code == 200
+    data = r.json()
+    assert "payments" in data
+    assert len(data["payments"]) == 2
+    assert {p["type"] for p in data["payments"]} == {"credit_card", "cash"}

@@ -8,10 +8,10 @@ class Payment(Base):
 	__tablename__ = "payment"
 
 	id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-	status: str = Column(String(20), nullable=False)
-	type: str = Column(String(20), nullable=False)
-	transaction_id: str = Column(String(20), nullable=False)
-	total: float = Column(Float, nullable=False)
+	status = Column(String(20), nullable=False)
+	type = Column(String(20), nullable=False)
+	transaction_id = Column(String(20), nullable=False)
+	total = Column(Float, nullable=False)
 	order_id = Column(Integer, ForeignKey("order.id"))
 
 	order = relationship("Order", back_populates="payments")
