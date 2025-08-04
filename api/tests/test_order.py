@@ -9,7 +9,7 @@ def test_read_order_date_range(client, test_data):
 def test_read_order_by_tracking(client, test_data):
 	r = client.get(f"/order/track/{test_data['tracking_number']}")
 	assert r.status_code == 200
-	assert r.json()["tracking_number"] in range(0, 9999)
+	assert isinstance(r.json()["tracking_number"], int)
 
 
 def test_delete_order_item(client, test_data):

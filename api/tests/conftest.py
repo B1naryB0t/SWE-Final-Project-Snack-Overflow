@@ -75,7 +75,7 @@ def test_data(client):
 		"status": "pending",
 		"total": 15.0,
 		"order_type": "takeout",
-		"tracking_number": random.randint(0, 9999),
+		"tracking_number": random.randint(0, 9999999),
 		"customer_id": data["customer_id"],
 		"menu_item_ids": [data["menu_item_id"]]
 	}
