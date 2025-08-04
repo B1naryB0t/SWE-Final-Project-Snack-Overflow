@@ -1,4 +1,4 @@
-from fastapi import status, Response, HTTPException
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from ..models import ingredient as model
@@ -20,12 +20,11 @@ def read_all(db: Session):
 	return db.query(model.Ingredient).all()
 
 
-
 def read_one(db: Session, ingredient_id):
-    ingredient = db.query(model.Ingredient).filter(model.Ingredient.id == ingredient_id).first()
-    if not ingredient:
-        raise HTTPException(status_code=404, detail="Ingredient not found")
-    return ingredient
+	ingredient = db.query(model.Ingredient).filter(model.Ingredient.id == ingredient_id).first()
+	if not ingredient:
+		raise HTTPException(status_code=404, detail="Ingredient not found")
+	return ingredient
 
 
 def update(db: Session, ingredient_id, ingredient):

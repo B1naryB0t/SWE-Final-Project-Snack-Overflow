@@ -4,34 +4,35 @@ from pydantic import BaseModel
 
 
 class MenuItemIngredientBase(BaseModel):
-    menu_item_id: int
-    ingredient_id: int
-    quantity: float  
+	menu_item_id: int
+	ingredient_id: int
+	quantity: float
 
-    class ConfigDict:
-        from_attributes = True
+	class ConfigDict:
+		from_attributes = True
 
 
 class MenuItemIngredientCreate(MenuItemIngredientBase):
-    menu_item_id: int
-    ingredient_id: int
-    quantity: float  
+	menu_item_id: int
+	ingredient_id: int
+	quantity: float
 
-    class ConfigDict:
-        from_attributes = True
+	class ConfigDict:
+		from_attributes = True
 
 
 class MenuItemIngredientUpdate(BaseModel):
-    menu_item_id: Optional[int] = None
-    ingredient_id: Optional[int] = None
-    quantity: Optional[float] = None  
-    class ConfigDict:
-        from_attributes = True
+	menu_item_id: Optional[int] = None
+	ingredient_id: Optional[int] = None
+	quantity: Optional[float] = None
+
+	class ConfigDict:
+		from_attributes = True
 
 
 class MenuItemIngredient(MenuItemIngredientBase):
-    id: int
+	id: int
 
-    class ConfigDict:
-        from_attributes = True
-        orm_mode = True
+	class ConfigDict:
+		from_attributes = True
+		orm_mode = True

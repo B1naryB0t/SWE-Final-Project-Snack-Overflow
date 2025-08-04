@@ -33,5 +33,5 @@ def update(ingredient_id: int, request: schema.IngredientUpdate, db: Session = D
 
 @router.delete("/{ingredient_id}", status_code=204, response_model=None)
 def delete(ingredient_id: int, db: Session = Depends(get_db)):
-    controller.delete(db=db, ingredient_id=ingredient_id)
-    return Response(status_code=204)
+	controller.delete(db=db, ingredient_id=ingredient_id)
+	return Response(status_code=204)

@@ -17,11 +17,11 @@ class OrderBase(BaseModel):
 
 
 class OrderCreate(OrderBase):
-    menu_item_ids: List[int]
-    promotion_code: Optional[str] = None
+	menu_item_ids: List[int]
+	promotion_code: Optional[str] = None
 
-    class ConfigDict:
-        from_attributes = True
+	class ConfigDict:
+		from_attributes = True
 
 
 class OrderUpdate(BaseModel):
