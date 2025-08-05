@@ -29,6 +29,10 @@ def read_one(order_id: int, db: Session = Depends(get_db)):
 	return controller.read_one(db, order_id=order_id)
 
 
+@router.get("/by_customer/{customer_id}", response_model=list[schema.Order])
+def get_orders_by_customer(customer_id: int, db: Session = Depends(get_db)):
+    return controller.read_by_customer(db, customer_id)
+
 @router.get("/by_date/", response_model=list[schema.Order])
 def read_by_date_range(start_date: str, end_date: str, db: Session = Depends(get_db)):
 	"""Get orders by date range."""
