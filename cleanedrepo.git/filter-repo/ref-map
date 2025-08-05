@@ -1,7 +1,0 @@
-old                                      new                                      ref
-08254cbabcdf8fc1dc3fe8a5bc22167d363f1ec1 b5a8b95c6aafb711560e7039490ef84c7c721c6e refs/heads/main
-66b909467f807c0fbd39d44f09ac7422a21681c2 e8315132b92168fa2731aa6efcbf441d5623701e refs/heads/master
-515e0c3b591f459425640336b4f5f2ccfe3522c9 e01404d99d6b8b17083ca2c5390eaeb8227907dc refs/heads/repair-work
-08254cbabcdf8fc1dc3fe8a5bc22167d363f1ec1 b5a8b95c6aafb711560e7039490ef84c7c721c6e refs/pull/1/head
-e257e913ca0b1de63909a60bf4e23e3ed4a96a39 e01404d99d6b8b17083ca2c5390eaeb8227907dc refs/pull/2/head
-515e0c3b591f459425640336b4f5f2ccfe3522c9 e01404d99d6b8b17083ca2c5390eaeb8227907dc refs/pull/3/head

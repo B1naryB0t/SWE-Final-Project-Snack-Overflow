@@ -58,7 +58,7 @@ def seed_if_needed():
         db.commit()
 
         order1 = Order(
-            date=datetime.now(),
+            date=datetime(2025, 8, 1, 12, 0, 0),
             status="pending",
             total=17.50,
             order_type="takeout",
@@ -66,7 +66,7 @@ def seed_if_needed():
             customer_id=alice.id
         )
         order2 = Order(
-            date=datetime.now(),
+            date=datetime(2025, 8, 2, 13, 0, 0),
             status="completed",
             total=10.00,
             order_type="dine-in",
@@ -74,7 +74,7 @@ def seed_if_needed():
             customer_id=bob.id
         )
         order3 = Order(
-            date=datetime.now(),
+            date=datetime(2025, 8, 3, 14, 0, 0),
             status="completed",
             total=9.00,
             order_type="delivery",
@@ -82,7 +82,7 @@ def seed_if_needed():
             customer_id=carol.id
         )
         order4 = Order(
-            date=datetime.now(),
+            date=datetime(2025, 8, 4, 15, 0, 0),
             status="pending",
             total=6.00,
             order_type="takeout",
@@ -113,4 +113,3 @@ def seed_if_needed():
         review4 = Review(customer_id=dave.id, menu_item_id=cheese_plate.id, rating=5, comment="Loved the cheese plate!")
         db.add_all([review1, review2, review3, review4])
         db.commit()
-    db.close()
