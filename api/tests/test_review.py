@@ -35,3 +35,13 @@ def test_post_review(client, test_data):
 	get_r = client.get(f"/review/menu/{test_data['menu_item_id']}")
 	assert get_r.status_code == 200
 	assert any(review["comment"] == "New review test" for review in get_r.json())
+
+
+def test_feedback_analysis(client):
+    response = client.get("/review/analysis")
+    assert response.status_code == 200
+    data = response.json()
+    assert "average_rating" in data
+    assert "total_reviews" in data
+    assert "ratings_breakdown" in data
+    assert isinstance(data["ratings_breakdown"], dict)

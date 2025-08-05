@@ -2,7 +2,8 @@ from fastapi import status, Response
 from sqlalchemy.orm import Session
 
 from ..models import review as model
-
+from ..schemas.feedback_analysis import FeedbackAnalysis
+from sqlalchemy import func
 
 def create(db: Session, review):
 	db_review = model.Review(
@@ -35,6 +36,25 @@ def update(db: Session, review_id, review):
 	db_review.update(update_data, synchronize_session=False)
 	db.commit()
 	return db_review.first()
+
+
+
+def analyze_feedback(db):
+    q = db.query(
+        func.avg(model.Review.rating),
+        func.count(model.Review.id)
+    )
+    avg, total = q.one()
+    breakdown = dict(
+        db.query(model.Review.rating, func.count(model.Review.id))
+        .group_by(model.Review.rating)
+        .all()
+    )
+    return FeedbackAnalysis(
+        average_rating=round(avg or 0, 2),
+        total_reviews=total,
+        ratings_breakdown=breakdown
+    )
 
 
 def delete(db: Session, review_id):
