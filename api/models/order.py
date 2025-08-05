@@ -3,7 +3,6 @@ from sqlalchemy.orm import relationship
 
 from ..dependencies.database import Base
 
-
 class Order(Base):
     __tablename__ = "order"
 
@@ -13,14 +12,14 @@ class Order(Base):
     total = Column(Float, nullable=False)
     order_type = Column(String(20), nullable=False)
     tracking_number = Column(Integer, nullable=True, unique=True)
-    customer_id = Column(Integer, ForeignKey("customer.id"), nullable=True)
+    customer_id = Column(Integer, ForeignKey("customer.id", ondelete="CASCADE"), nullable=True)
     guest_name = Column(String(100), nullable=True)
     guest_email = Column(String(100), nullable=True)
     guest_phone = Column(String(20), nullable=True)
+    promotion_id = Column(Integer, ForeignKey('promotion.id', ondelete="SET NULL"), nullable=True)
 
     customer = relationship("Customer", back_populates="orders")
-    order_items = relationship("OrderItem", back_populates="order")
-    payments = relationship("Payment", back_populates="order")
-    reviews = relationship("Review", back_populates="order")
-    promotion_id = Column(Integer, ForeignKey('promotion.id'))
+    order_items = relationship("OrderItem", back_populates="order", cascade="all, delete")
+    payments = relationship("Payment", back_populates="order", cascade="all, delete")
+    reviews = relationship("Review", back_populates="order", cascade="all, delete")
     promotion = relationship("Promotion")

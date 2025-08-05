@@ -1,3 +1,6 @@
+import os
+os.environ["APP_ENV"] = "test"
+
 import random
 import uuid
 
@@ -7,6 +10,7 @@ from sqlalchemy import MetaData
 
 from api.dependencies.database import engine
 from ..main import app
+
 
 
 @pytest.fixture(scope="function", autouse=True)
