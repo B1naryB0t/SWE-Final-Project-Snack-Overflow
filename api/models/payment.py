@@ -10,7 +10,7 @@ class Payment(Base):
 	id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 	status = Column(String(20), nullable=False)
 	type = Column(String(20), nullable=False)
-	transaction_id = Column(String(20), nullable=False)
+	transaction_id = Column(String(20), nullable=True)
 	total = Column(Float, nullable=False)
 	order_id = Column(Integer, ForeignKey("order.id"))
 

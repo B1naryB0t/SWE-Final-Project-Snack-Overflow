@@ -1,18 +1,24 @@
 from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel
-from .payment import Payment, PaymentCreate
+from .payment import Payment, PaymentInOrder  # Import PaymentInOrder, not PaymentCreate
+from enum import Enum
+
+class OrderType(str, Enum):
+    dine_in = "dine-in"
+    takeout = "takeout"
+    delivery = "delivery"
 
 class OrderCreate(BaseModel):
     date: datetime
     status: str
-    order_type: str
+    order_type: OrderType
     customer_id: Optional[int] = None
     guest_name: Optional[str] = None
     guest_email: Optional[str] = None
     guest_phone: Optional[str] = None
     promotion_id: Optional[int] = None
-    payments: List[PaymentCreate] = []
+    payments: List[PaymentInOrder] = []  # Use PaymentInOrder here
     menu_item_ids: List[int] = []
 
     class ConfigDict:
@@ -21,7 +27,7 @@ class OrderCreate(BaseModel):
 class OrderUpdate(BaseModel):
     date: Optional[datetime] = None
     status: Optional[str] = None
-    order_type: Optional[str] = None
+    order_type: Optional[OrderType] = None  
     customer_id: Optional[int] = None
     guest_name: Optional[str] = None
     guest_email: Optional[str] = None
@@ -36,7 +42,7 @@ class Order(BaseModel):
     date: datetime
     status: str
     total: float
-    order_type: str
+    order_type: OrderType  
     tracking_number: int
     customer_id: Optional[int] = None
     guest_name: Optional[str] = None
