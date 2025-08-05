@@ -129,5 +129,3 @@ def test_data(client):
 	data["review_id"] = r.json()["id"]
 
 	return data
-
-

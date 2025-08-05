@@ -57,105 +57,110 @@ def test_track_order_status(client, test_data):
 	assert "status" in order2
 	assert order2["status"] == order["status"]
 
+
 def test_guest_checkout(client, test_data):
-    order_payload = {
-        "date": "2025-08-02T00:00:00",
-        "status": "pending",
-        "total": 15.0,
-        "order_type": "takeout",
-        "tracking_number": random.randint(10000, 99999),
-        "menu_item_ids": [test_data["menu_item_id"]],
-        # No customer_id!
-        "guest_name": "Guest User",
-        "guest_email": "guest@example.com",
-        "guest_phone": "555-5555"
-    }
-    r = client.post("/order", json=order_payload)
-    assert r.status_code == 200
-    data = r.json()
-    assert data["guest_name"] == "Guest User"
-    assert data["customer_id"] is None
+	order_payload = {
+		"date": "2025-08-02T00:00:00",
+		"status": "pending",
+		"total": 15.0,
+		"order_type": "takeout",
+		"tracking_number": random.randint(10000, 99999),
+		"menu_item_ids": [test_data["menu_item_id"]],
+		# No customer_id!
+		"guest_name": "Guest User",
+		"guest_email": "guest@example.com",
+		"guest_phone": "555-5555"
+	}
+	r = client.post("/order", json=order_payload)
+	assert r.status_code == 200
+	data = r.json()
+	assert data["guest_name"] == "Guest User"
+	assert data["customer_id"] is None
+
 
 def test_guest_checkout_with_promotion(client, test_data):
-    order_payload = {
-        "date": "2025-08-02T00:00:00",
-        "status": "pending",
-        "total": 20.0,
-        "order_type": "takeout",
-        "tracking_number": random.randint(10000, 99999),
-        "menu_item_ids": [test_data["menu_item_id"]],
-        "guest_name": "Promo Guest",
-        "guest_email": "promo@example.com",
-        "guest_phone": "555-1234",
-        "promotion_id": test_data["promotion_id"]
-    }
-    r = client.post("/order", json=order_payload)
-    assert r.status_code == 200
-    data = r.json()
-    assert data["guest_name"] == "Promo Guest"
-    assert data["promotion_id"] == test_data["promotion_id"]
+	order_payload = {
+		"date": "2025-08-02T00:00:00",
+		"status": "pending",
+		"total": 20.0,
+		"order_type": "takeout",
+		"tracking_number": random.randint(10000, 99999),
+		"menu_item_ids": [test_data["menu_item_id"]],
+		"guest_name": "Promo Guest",
+		"guest_email": "promo@example.com",
+		"guest_phone": "555-1234",
+		"promotion_id": test_data["promotion_id"]
+	}
+	r = client.post("/order", json=order_payload)
+	assert r.status_code == 200
+	data = r.json()
+	assert data["guest_name"] == "Promo Guest"
+	assert data["promotion_id"] == test_data["promotion_id"]
+
 
 def test_registered_customer_checkout_with_promotion(client, test_data):
-    order_payload = {
-        "date": "2025-08-02T00:00:00",
-        "status": "pending",
-        "total": 20.0,
-        "order_type": "takeout",
-        "tracking_number": random.randint(10000, 99999),
-        "menu_item_ids": [test_data["menu_item_id"]],
-        "customer_id": test_data["customer_id"],  
-        "promotion_id": test_data["promotion_id"]
-    }
-    r = client.post("/order", json=order_payload)
-    assert r.status_code == 200
-    data = r.json()
-    assert data["customer_id"] == test_data["customer_id"]
-    assert data["promotion_id"] == test_data["promotion_id"]
+	order_payload = {
+		"date": "2025-08-02T00:00:00",
+		"status": "pending",
+		"total": 20.0,
+		"order_type": "takeout",
+		"tracking_number": random.randint(10000, 99999),
+		"menu_item_ids": [test_data["menu_item_id"]],
+		"customer_id": test_data["customer_id"],
+		"promotion_id": test_data["promotion_id"]
+	}
+	r = client.post("/order", json=order_payload)
+	assert r.status_code == 200
+	data = r.json()
+	assert data["customer_id"] == test_data["customer_id"]
+	assert data["promotion_id"] == test_data["promotion_id"]
+
 
 def test_order_with_invalid_promotion(client, test_data):
-    order_payload = {
-        "date": "2025-08-02T00:00:00",
-        "status": "pending",
-        "total": 20.0,
-        "order_type": "takeout",
-        "tracking_number": random.randint(10000, 99999),
-        "menu_item_ids": [test_data["menu_item_id"]],
-        "customer_id": test_data["customer_id"],
-        "promotion_id": 999999  # Invalid ID
-    }
-    r = client.post("/order", json=order_payload)
-    assert r.status_code == 400
-    assert "Invalid or expired promotion" in r.text
+	order_payload = {
+		"date": "2025-08-02T00:00:00",
+		"status": "pending",
+		"total": 20.0,
+		"order_type": "takeout",
+		"tracking_number": random.randint(10000, 99999),
+		"menu_item_ids": [test_data["menu_item_id"]],
+		"customer_id": test_data["customer_id"],
+		"promotion_id": 999999  # Invalid ID
+	}
+	r = client.post("/order", json=order_payload)
+	assert r.status_code == 400
+	assert "Invalid or expired promotion" in r.text
+
 
 def test_order_with_multiple_payments(client, test_data):
-    order_payload = {
-        "date": "2025-08-02T00:00:00",
-        "status": "pending",
-        "total": 20.0,
-        "order_type": "takeout",
-        "tracking_number": random.randint(10000, 99999),
-        "menu_item_ids": [test_data["menu_item_id"]],
-        "customer_id": test_data["customer_id"],
-        "payments": [
-            {
-                "status": "completed",
-                "type": "credit_card",
-                "transaction_id": "txn123",
-                "total": 10.0,
-                "order_id": 0  
-            },
-            {
-                "status": "completed",
-                "type": "cash",
-                "transaction_id": "txn124",
-                "total": 10.0,
-                "order_id": 0
-            }
-        ]
-    }
-    r = client.post("/order", json=order_payload)
-    assert r.status_code == 200
-    data = r.json()
-    assert "payments" in data
-    assert len(data["payments"]) == 2
-    assert {p["type"] for p in data["payments"]} == {"credit_card", "cash"}
+	order_payload = {
+		"date": "2025-08-02T00:00:00",
+		"status": "pending",
+		"total": 20.0,
+		"order_type": "takeout",
+		"tracking_number": random.randint(10000, 99999),
+		"menu_item_ids": [test_data["menu_item_id"]],
+		"customer_id": test_data["customer_id"],
+		"payments": [
+			{
+				"status": "completed",
+				"type": "credit_card",
+				"transaction_id": "txn123",
+				"total": 10.0,
+				"order_id": 0
+			},
+			{
+				"status": "completed",
+				"type": "cash",
+				"transaction_id": "txn124",
+				"total": 10.0,
+				"order_id": 0
+			}
+		]
+	}
+	r = client.post("/order", json=order_payload)
+	assert r.status_code == 200
+	data = r.json()
+	assert "payments" in data
+	assert len(data["payments"]) == 2
+	assert {p["type"] for p in data["payments"]} == {"credit_card", "cash"}
