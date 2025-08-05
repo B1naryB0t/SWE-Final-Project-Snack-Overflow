@@ -13,29 +13,35 @@ router = APIRouter(
 
 @router.post("/", response_model=schema.Review)
 def create(request: schema.ReviewCreate, db: Session = Depends(get_db)):
+	"""Create a new review."""
 	return controller.create(db=db, review=request)
 
 
 @router.get("/", response_model=list[schema.Review])
 def read_all(db: Session = Depends(get_db)):
+	"""Get all reviews."""
 	return controller.read_all(db)
 
 
 @router.get("/{review_id}", response_model=schema.Review)
 def read_one(review_id: int, db: Session = Depends(get_db)):
+	"""Get a review by ID."""
 	return controller.read_one(db, review_id=review_id)
 
 
 @router.get("/menu/{menu_item_id}", response_model=list[schema.Review])
 def read_by_menu_item(menu_item_id: int, db: Session = Depends(get_db)):
+	"""Get reviews by menu item ID."""
 	return controller.read_by_menu_item(db, menu_item_id=menu_item_id)
 
 
 @router.put("/{review_id}", response_model=schema.Review)
 def update(review_id: int, request: schema.ReviewUpdate, db: Session = Depends(get_db)):
+	"""Update a review by ID."""
 	return controller.update(db=db, review=request, review_id=review_id)
 
 
 @router.delete("/{review_id}")
 def delete(review_id: int, db: Session = Depends(get_db)):
+	"""Delete a review by ID."""
 	return controller.delete(db=db, review_id=review_id)

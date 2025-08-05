@@ -13,24 +13,29 @@ router = APIRouter(
 
 @router.post("/", response_model=schema.Promotion)
 def create(request: schema.PromotionCreate, db: Session = Depends(get_db)):
+	"""Create a new promotion."""
 	return controller.create(db=db, promotion=request)
 
 
 @router.get("/", response_model=list[schema.Promotion])
 def read_all(db: Session = Depends(get_db)):
+	"""Get all promotions."""
 	return controller.read_all(db)
 
 
 @router.get("/{promotion_id}", response_model=schema.Promotion)
 def read_one(promotion_id: int, db: Session = Depends(get_db)):
+	"""Get a promotion by ID."""
 	return controller.read_one(db, promotion_id=promotion_id)
 
 
 @router.put("/{promotion_id}", response_model=schema.Promotion)
 def update(promotion_id: int, request: schema.PromotionUpdate, db: Session = Depends(get_db)):
+	"""Update a promotion by ID."""
 	return controller.update(db=db, promotion=request, promotion_id=promotion_id)
 
 
 @router.delete("/{promotion_id}")
 def delete(promotion_id: int, db: Session = Depends(get_db)):
+	"""Delete a promotion by ID."""
 	return controller.delete(db=db, promotion_id=promotion_id)
