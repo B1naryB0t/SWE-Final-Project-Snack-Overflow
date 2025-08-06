@@ -7,8 +7,7 @@ from ..schemas.analytics import TopCustomer
 from typing import List
 from sqlalchemy import func, desc  
 
-router = APIRouter()
-
+router = APIRouter(tags=["Top Customer Analysis"])
 @router.get("/analytics/top-customers", response_model=List[TopCustomer], summary="Top 3 Customers by Spending")
 def top_customers(db: Session = Depends(get_db)):
     try:
