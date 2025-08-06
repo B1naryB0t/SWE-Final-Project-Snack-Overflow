@@ -38,10 +38,10 @@ def test_post_review(client, test_data):
 
 
 def test_feedback_analysis(client):
-    response = client.get("/review/analysis")
-    assert response.status_code == 200
-    data = response.json()
-    assert "average_rating" in data
-    assert "total_reviews" in data
-    assert "ratings_breakdown" in data
-    assert isinstance(data["ratings_breakdown"], dict)
+	response = client.get("/review/analysis")
+	assert response.status_code == 200
+	data = response.json()
+	assert "average_rating" in data
+	assert "total_reviews" in data
+	assert "ratings_breakdown" in data
+	assert isinstance(data["ratings_breakdown"], dict)

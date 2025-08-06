@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
+
 class TopCustomer(BaseModel):
-    name: str
-    email: str
-    total_spent: float
+	name: str
+	email: str
+	total_spent: float
