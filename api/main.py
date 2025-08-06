@@ -6,6 +6,7 @@ from .dependencies.config import Config
 from .models import model_loader
 from .routers import index as indexRoute
 from .dependencies.database import Base, engine
+from .routers import analytics
 
 from .seed import seed_if_needed
 
