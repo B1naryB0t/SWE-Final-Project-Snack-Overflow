@@ -1,3 +1,5 @@
 __pycache__
 .idea
 app.db
+test.db
+.DS_Store

@@ -4,7 +4,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel
 
-from .payment import Payment, PaymentInOrder  # Import PaymentInOrder, not PaymentCreate
+from .payment import Payment, PaymentInOrder
 
 
 class OrderType(str, Enum):
@@ -22,7 +22,7 @@ class OrderCreate(BaseModel):
 	guest_email: Optional[str] = None
 	guest_phone: Optional[str] = None
 	promotion_id: Optional[int] = None
-	payments: List[PaymentInOrder] = []  # Use PaymentInOrder here
+	payments: List[PaymentInOrder] = []
 	menu_item_ids: List[int] = []
 
 	class ConfigDict:
