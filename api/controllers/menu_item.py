@@ -35,6 +35,9 @@ def read_by_category(db: Session, category: str):
 def read_by_rating(db: Session, rating: int):
 	return db.query(model.MenuItem).join(model_review.Review).filter(model_review.Review.rating == rating).all()
 
+def read_by_tag(db, tag: str):
+    from ..models.menu_item import MenuItem
+    return db.query(MenuItem).filter(MenuItem.tags.ilike(f"%{tag}%")).all()
 
 def update(db: Session, menu_item_id, menu_item):
 	db_menu_item = db.query(model.MenuItem).filter(model.MenuItem.id == menu_item_id)

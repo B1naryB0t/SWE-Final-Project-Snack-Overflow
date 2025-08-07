@@ -4,37 +4,40 @@ from pydantic import BaseModel
 
 
 class MenuItemBase(BaseModel):
-	name: str
-	category: str
-	price: float
-	calories: int
+    name: str
+    category: str
+    price: float
+    calories: int
+    tags: Optional[str] = None  # <-- Add this line
 
-	class ConfigDict:
-		from_attributes = True
+    class ConfigDict:
+        from_attributes = True
 
 
 class MenuItemCreate(MenuItemBase):
-	name: str
-	category: str
-	price: float
-	calories: int
+    name: str
+    category: str
+    price: float
+    calories: int
+    tags: Optional[str] = None  # <-- Add this line
 
-	class ConfigDict:
-		from_attributes = True
+    class ConfigDict:
+        from_attributes = True
 
 
 class MenuItemUpdate(BaseModel):
-	name: Optional[str] = None
-	category: Optional[str] = None
-	price: Optional[float] = None
-	calories: Optional[int] = None
+    name: Optional[str] = None
+    category: Optional[str] = None
+    price: Optional[float] = None
+    calories: Optional[int] = None
+    tags: Optional[str] = None  # <-- Add this line
 
-	class ConfigDict:
-		from_attributes = True
+    class ConfigDict:
+        from_attributes = True
 
 
 class MenuItem(MenuItemBase):
-	id: int
+    id: int
 
-	class ConfigDict:
-		from_attributes = True
+    class ConfigDict:
+        from_attributes = True

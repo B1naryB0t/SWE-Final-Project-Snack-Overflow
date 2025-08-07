@@ -16,3 +16,4 @@ class MenuItem(Base):
 	order_items = relationship("OrderItem", back_populates="menu_item", cascade="all, delete")
 	menu_item_ingredients = relationship("MenuItemIngredient", back_populates="menu_item", cascade="all, delete")
 	reviews = relationship("Review", back_populates="menu_item", cascade="all, delete")
+	tags = Column(String(50), nullable=True)  

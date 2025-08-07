@@ -22,6 +22,10 @@ def read_all(db: Session = Depends(get_db)):
 	"""Get all menu items."""
 	return controller.read_all(db)
 
+@router.get("/by_tag", response_model=list[schema.MenuItem])
+def read_by_tag(tag: str, db: Session = Depends(get_db)):
+    """Get menu items filtered by tag."""
+    return controller.read_by_tag(db, tag=tag)
 
 @router.get("/search", response_model=list[schema.MenuItem])
 def search_menu_items(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
