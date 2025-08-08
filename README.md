@@ -9,11 +9,14 @@ A Python environment is required.
 * `pip install -r requirements.txt`
 
 ### Configure Database:
-By default, the API uses SQLite. You can change the database URL in `api/database.py` to connect to a different SQL database.
+By default, the API can use MySQL or SQLite. Check the Technical Documentation for explanations on the easy switch. You can change the database URL in `api/database.py` to connect to a different SQL database.
 Example for MySQL:
 ```python
 DATABASE_URL = "mysql+pymysql://username:password@localhost/db_name"
 ```
+for SQLite:
+'''
+DATABASE_URL = "sqlite:///nameof.db"
 
 ### Run the server:
 `uvicorn api.main:app --reload`

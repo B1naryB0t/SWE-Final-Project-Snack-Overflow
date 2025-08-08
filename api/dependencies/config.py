@@ -9,6 +9,6 @@ class Config:
 APP_ENV = os.getenv("APP_ENV", "dev")
 
 if APP_ENV == "test":
-	DATABASE_URL = "sqlite:///test.db"
+	DATABASE_URL = "mysql+pymysql://user:password@host:3306/test_db"
 else:
-	DATABASE_URL = "sqlite:///app.db"
+	DATABASE_URL = "mysql+pymysql://user:password@host:3306/app_db"
