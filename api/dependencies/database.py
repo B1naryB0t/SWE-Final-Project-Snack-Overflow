@@ -13,7 +13,7 @@ if DATABASE_URL.startswith("mysql"):
 		root_url = f"mysql+pymysql://{user}:{password}@{host}:{port}/"
 		engine_tmp = create_engine(root_url)
 		with engine_tmp.connect() as conn:
-			conn.execute(text(f"CREATE DATABASE IF NOT EXISTS {db_name}"))  # <-- wrap with text()
+			conn.execute(text(f"CREATE DATABASE IF NOT EXISTS {db_name}")) 
 		engine_tmp.dispose()
 
 if DATABASE_URL.startswith("sqlite"):

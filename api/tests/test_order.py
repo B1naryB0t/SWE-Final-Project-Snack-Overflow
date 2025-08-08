@@ -66,7 +66,6 @@ def test_guest_checkout(client, test_data):
 		"order_type": "takeout",
 		"tracking_number": random.randint(10000, 99999),
 		"menu_item_ids": [test_data["menu_item_id"]],
-		# No customer_id!
 		"guest_name": "Guest User",
 		"guest_email": "guest@example.com",
 		"guest_phone": "555-5555"

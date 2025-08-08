@@ -11,8 +11,8 @@ def create(db: Session, order_item):
 	if not menu_item:
 		raise HTTPException(status_code=404, detail="Menu item not found")
 
-	for mii in menu_item.menu_item_ingredients:  # FIXED HERE
-		required_qty = mii.quantity * order_item.quantity  # Use mii.quantity (not quantity_required)
+	for mii in menu_item.menu_item_ingredients:  
+		required_qty = mii.quantity * order_item.quantity 
 		available_qty = mii.ingredient.quantity
 
 		if available_qty < required_qty:
@@ -21,8 +21,7 @@ def create(db: Session, order_item):
 				detail=f"Insufficient ingredient: {mii.ingredient.name} (required: {required_qty}, available: {available_qty})"
 			)
 
-	# All ingredients are available – deduct and commit
-	for mii in menu_item.menu_item_ingredients:  # FIXED HERE
+	for mii in menu_item.menu_item_ingredients:  
 		required_qty = mii.quantity * order_item.quantity
 		mii.ingredient.quantity -= required_qty
 

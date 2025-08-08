@@ -67,7 +67,7 @@ def test_data(client):
 	mii = {
 		"menu_item_id": data["menu_item_id"],
 		"ingredient_id": data["ingredient_id"],
-		"quantity": 10.0  # Added required field
+		"quantity": 10.0  
 	}
 	r = client.post("/menu_item_ingredient/", json=mii)
 	assert r.status_code in (200, 201)
